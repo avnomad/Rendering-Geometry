@@ -106,16 +106,9 @@ void display()
 	glRotatef(45,0,0,1);
 
 	// draw 1st shape
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-
 	glVertexPointer(2,GL_FLOAT,0,vertices1);
 	glColorPointer(4,GL_FLOAT,0,colors1);
-
 	glDrawElements(GL_TRIANGLES,elementsOf(indices1),GL_UNSIGNED_INT,indices1);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
 
 	// transorm 2nd shape
 	glMatrixMode(GL_MODELVIEW);
@@ -124,13 +117,9 @@ void display()
 	glScalef(75,75,75);
 
 	// draw 2nd shape
-	glBegin(GL_TRIANGLES);
-		for(int c = 0 ; c < elementsOf(indices2) ; ++c)
-		{
-			glColor4fv((GLfloat*)&colors2[indices2[c]]);
-			glVertex2fv(&vertices2[indices2[c]][0]);
-		} // end for
-	glEnd();
+	glVertexPointer(2,GL_FLOAT,0,vertices2);
+	glColorPointer(4,GL_FLOAT,0,colors2);
+	glDrawElements(GL_TRIANGLES,elementsOf(indices2),GL_UNSIGNED_INT,indices2);
 
 	// transorm 3rd shape
 	glMatrixMode(GL_MODELVIEW);
@@ -139,16 +128,10 @@ void display()
 	glScalef(40,40,40);
 
 	// draw 3rd shape
+	glVertexPointer(2,GL_FLOAT,0,vertices3);
+	glColorPointer(4,GL_FLOAT,0,colors3);
 	for(int i = 0 ; i < elementsOf(indices3) ; ++i)
-	{
-		glBegin(GL_TRIANGLE_STRIP);
-			for(int c = 0 ; c < elementsOf(indices3[i]) ; ++c)
-			{
-				glColor4fv((GLfloat*)&colors3[indices3[i][c]]);
-				glVertex2fv(&vertices3[indices3[i][c]][0]);
-			} // end for
-		glEnd();
-	} // end for i
+		glDrawElements(GL_TRIANGLE_STRIP,elementsOf(indices3[i]),GL_UNSIGNED_INT,indices3[i]);
 
 	glutSwapBuffers();
 } // end function display
@@ -192,6 +175,9 @@ int main(int argc, char **argv)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glEnable(GL_LINE_SMOOTH);
+
+	glEnableClientState(GL_VERTEX_ARRAY);	// enable vertex arrays
+	glEnableClientState(GL_COLOR_ARRAY);
 
 	// event handling initialization
 	glutDisplayFunc(display);
