@@ -36,9 +36,9 @@ GLuint indices1[] = {
 	0,3,4,
 	2,4,5,
 	3,6,4,
-	4,7,5,
+	4,8,5,
 	4,6,7,
-	5,7,8
+	4,7,8
 };
 	
 
@@ -51,21 +51,11 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glColor4f(0.0,0.5,0.0,1.0);
-
-	glBegin(GL_QUADS);
-		glVertex2f(0.0,0.0);
-		glVertex2f(1.0,0.0);
-		glVertex2f(1.0,1.0);
-		glVertex2f(0.0,1.0);
-	glEnd();
-
-
-	glBegin(GL_POINTS);
+	glBegin(GL_TRIANGLES);
 		for(int c = 0 ; c < elementsOf(indices1) ; ++c)
 		{
-			//glColor4fv((GLfloat*)&colors1[c]);
-			glVertex2fv(&vertices1[c][0]);
+			glColor4fv((GLfloat*)&colors1[indices1[c]]);
+			glVertex2fv(&vertices1[indices1[c]][0]);
 		} // end for
 	glEnd();
 
@@ -105,6 +95,9 @@ int main(int argc, char **argv)
 	glewInit();
 
 	// OpenGL initialization
+	glPolygonMode(GL_FRONT,GL_FILL);
+	glPolygonMode(GL_BACK,GL_LINE);
+	glShadeModel(GL_SMOOTH);
 
 	// event handling initialization
 	glutDisplayFunc(display);
