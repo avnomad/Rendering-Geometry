@@ -17,6 +17,8 @@ struct Color
 Color red = {1.0,0.0,0.0,1.0};
 Color yellow = {1.0,1.0,0.0,1.0};
 Color quarterOrange = {1.0,0.75,0.0,0.25};
+Color blue = {0.0,0.0,1.0,1.0};
+Color cyan = {0.0,1.0,1.0,1.0};
 
 
 GLfloat vertices1[][2] = {
@@ -65,6 +67,28 @@ GLuint indices2[] = {
 	4,7,8
 };
 
+GLfloat vertices3[][2] = {
+	{-2,2},{-1,2},{0,2},{1,2},{2,2},
+	{-2,1},{-1,1},{0,1},{1,1},{2,1},
+	{-2,0},{-1,0},{0,0},{1,0},{2,0},
+	{-2,-1},{-1,-1},{0,-1},{1,-1},{2,-1},
+	{-2,-2},{-1,-2},{0,-2},{1,-2},{2,-2}
+};
+
+Color colors3[] = {
+	blue,cyan,blue,cyan,blue,
+	cyan,blue,cyan,blue,cyan,
+	blue,cyan,blue,cyan,blue,
+	cyan,blue,cyan,blue,cyan,
+	blue,cyan,blue,cyan,blue
+};
+
+GLuint indices3[][10] = {
+	{0,5,1,6,2,7,3,8,4,9},
+	{5,10,6,11,7,12,8,13,9,14},
+	{10,15,11,16,12,17,13,18,14,19},
+	{15,20,16,21,17,22,18,23,19,24}
+};
 
 
 
@@ -104,6 +128,24 @@ void display()
 			glVertex2fv(&vertices2[indices2[c]][0]);
 		} // end for
 	glEnd();
+
+	// transorm 3rd shape
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(350,150,0);
+	glScalef(40,40,40);
+
+	// draw 3rd shape
+	for(int i = 0 ; i < elementsOf(indices3) ; ++i)
+	{
+		glBegin(GL_TRIANGLE_STRIP);
+			for(int c = 0 ; c < elementsOf(indices3[i]) ; ++c)
+			{
+				glColor4fv((GLfloat*)&colors3[indices3[i][c]]);
+				glVertex2fv(&vertices3[indices3[i][c]][0]);
+			} // end for
+		glEnd();
+	} // end for i
 
 	glutSwapBuffers();
 } // end function display
