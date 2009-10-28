@@ -106,13 +106,16 @@ void display()
 	glRotatef(45,0,0,1);
 
 	// draw 1st shape
-	glBegin(GL_TRIANGLES);
-		for(int c = 0 ; c < elementsOf(indices1) ; ++c)
-		{
-			glColor4fv((GLfloat*)&colors1[indices1[c]]);
-			glVertex2fv(&vertices1[indices1[c]][0]);
-		} // end for
-	glEnd();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	glVertexPointer(2,GL_FLOAT,0,vertices1);
+	glColorPointer(4,GL_FLOAT,0,colors1);
+
+	glDrawElements(GL_TRIANGLES,elementsOf(indices1),GL_UNSIGNED_INT,indices1);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
 
 	// transorm 2nd shape
 	glMatrixMode(GL_MODELVIEW);
