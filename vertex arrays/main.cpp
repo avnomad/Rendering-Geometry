@@ -3,9 +3,71 @@
 #include <cstdlib>
 
 
+#define elementsOf(A) (sizeof(A)/sizeof((A)[0]))
+
+
+struct Color
+{
+	GLfloat red;
+	GLfloat green;
+	GLfloat blue;
+	GLfloat alpha;
+}; // end structure Color
+
+Color red = {1.0,0.0,0.0,1.0};
+Color yellow = {1.0,1.0,0.0,1.0};
+Color quarterOrange = {1.0,0.75,0.0,0.25};
+
+GLfloat vertices1[][2] = {
+	{-1.0,1.0}, {0.0,1.0}, {1.0,1.0},
+	{-1.0,0.0}, {0.0,0.0}, {1.0,0.0},
+	{-1.0,-1.0}, {0.0,-1.0}, {1.0,-1.0}
+};
+
+Color colors1[] = {
+	yellow,quarterOrange,yellow,
+	quarterOrange,red,quarterOrange,
+	yellow,quarterOrange,yellow
+};
+
+GLuint indices1[] = {
+	0,4,1,
+	1,4,2,
+	0,3,4,
+	2,4,5,
+	3,6,4,
+	4,7,5,
+	4,6,7,
+	5,7,8
+};
+	
+
+
+
+
+
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	glColor4f(0.0,0.5,0.0,1.0);
+
+	glBegin(GL_QUADS);
+		glVertex2f(0.0,0.0);
+		glVertex2f(1.0,0.0);
+		glVertex2f(1.0,1.0);
+		glVertex2f(0.0,1.0);
+	glEnd();
+
+
+	glBegin(GL_POINTS);
+		for(int c = 0 ; c < elementsOf(indices1) ; ++c)
+		{
+			//glColor4fv((GLfloat*)&colors1[c]);
+			glVertex2fv(&vertices1[c][0]);
+		} // end for
+	glEnd();
 
 	glutSwapBuffers();
 } // end function display
@@ -26,7 +88,7 @@ void reshape (int w, int h)
 	glViewport(0, 0, (GLsizei) w, (GLsizei) h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, (GLdouble) w, 0.0, (GLdouble) h);
+	gluOrtho2D((GLdouble) -2, (GLdouble) 2, (GLdouble) -2, (GLdouble) 2);
 } // end function reshape
 
 
