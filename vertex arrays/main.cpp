@@ -94,6 +94,7 @@ GLuint indices3[][10] = {
 enum {g1,g2,g3,geometries};
 enum {vertex,color,index,arrays};
 GLuint buffers[geometries][arrays];
+GLuint vertexArrays[geometries];
 
 
 void display()
@@ -108,11 +109,7 @@ void display()
 	glRotatef(45,0,0,1);
 
 	// draw 1st shape
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[g1][vertex]);
-	glVertexPointer(2,GL_FLOAT,0,0);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[g1][color]);
-	glColorPointer(4,GL_FLOAT,0,0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g1][index]);
+	glBindVertexArray(vertexArrays[g1]);
 	glDrawElements(GL_TRIANGLES,elementsOf(indices1),GL_UNSIGNED_INT,offset(0));
 
 	// transorm 2nd shape
@@ -122,11 +119,7 @@ void display()
 	glScalef(75,75,75);
 
 	// draw 2nd shape
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][vertex]);
-	glVertexPointer(2,GL_FLOAT,0,0);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][color]);
-	glColorPointer(4,GL_FLOAT,0,0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g2][index]);
+	glBindVertexArray(vertexArrays[g2]);
 	glDrawElements(GL_TRIANGLES,elementsOf(indices2),GL_UNSIGNED_INT,offset(0));
 
 	// transorm 3rd shape
@@ -136,11 +129,7 @@ void display()
 	glScalef(40,40,40);
 
 	// draw 3rd shape
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][vertex]);
-	glVertexPointer(2,GL_FLOAT,0,0);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][color]);
-	glColorPointer(4,GL_FLOAT,0,0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g3][index]);
+	glBindVertexArray(vertexArrays[g3]);
 	for(int i = 0 ; i < elementsOf(indices3) ; ++i)
 		glDrawElements(GL_TRIANGLE_STRIP,elementsOf(indices3[i]),GL_UNSIGNED_INT,offset(i*sizeof(indices3[0])));
 
@@ -187,25 +176,39 @@ int main(int argc, char **argv)
 	glEnable(GL_BLEND);
 	glEnable(GL_LINE_SMOOTH);
 
-	glEnableClientState(GL_VERTEX_ARRAY);	// enable vertex arrays
-	glEnableClientState(GL_COLOR_ARRAY);
+	glGenVertexArrays(geometries,vertexArrays);	// create vertex array identifiers
 	glGenBuffers(geometries*arrays,&buffers[0][0]);	// create buffer identifiers
+	glBindVertexArray(vertexArrays[g1]);	// configure vertex array (g1)
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g1][vertex]);	// send information to the server (g1)
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices1),vertices1,GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2,GL_FLOAT,0,0);
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g1][color]);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(colors1),colors1,GL_STATIC_DRAW);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(4,GL_FLOAT,0,0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g1][index]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices1),indices1,GL_STATIC_DRAW);
+	glBindVertexArray(vertexArrays[g2]);	// configure vertex array (g2)
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][vertex]);	// send information to the server (g2)
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices2),vertices2,GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2,GL_FLOAT,0,0);
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][color]);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(colors2),colors2,GL_STATIC_DRAW);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(4,GL_FLOAT,0,0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g2][index]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices2),indices2,GL_STATIC_DRAW);
+	glBindVertexArray(vertexArrays[g3]);	// configure vertex array (g3)
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][vertex]);	// send information to the server (g3)
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices3),vertices3,GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2,GL_FLOAT,0,0);
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][color]);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(colors3),colors3,GL_STATIC_DRAW);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(4,GL_FLOAT,0,0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g3][index]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices3),indices3,GL_STATIC_DRAW);
 
