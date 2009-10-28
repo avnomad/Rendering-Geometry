@@ -4,7 +4,7 @@
 
 
 #define elementsOf(A) (sizeof(A)/sizeof((A)[0]))
-
+#define offset(A) ((GLubyte*)0 + (A))
 
 struct Color
 {
@@ -113,10 +113,7 @@ void display()
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[g1][color]);
 	glColorPointer(4,GL_FLOAT,0,0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g1][index]);
-	glDrawElements(GL_TRIANGLES,elementsOf(indices1),GL_UNSIGNED_INT,0);
-
-	glBindBuffer(GL_ARRAY_BUFFER,0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+	glDrawElements(GL_TRIANGLES,elementsOf(indices1),GL_UNSIGNED_INT,offset(0));
 
 	// transorm 2nd shape
 	glMatrixMode(GL_MODELVIEW);
@@ -125,9 +122,12 @@ void display()
 	glScalef(75,75,75);
 
 	// draw 2nd shape
-	glVertexPointer(2,GL_FLOAT,0,vertices2);
-	glColorPointer(4,GL_FLOAT,0,colors2);
-	glDrawElements(GL_TRIANGLES,elementsOf(indices2),GL_UNSIGNED_INT,indices2);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][vertex]);
+	glVertexPointer(2,GL_FLOAT,0,0);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][color]);
+	glColorPointer(4,GL_FLOAT,0,0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g2][index]);
+	glDrawElements(GL_TRIANGLES,elementsOf(indices2),GL_UNSIGNED_INT,offset(0));
 
 	// transorm 3rd shape
 	glMatrixMode(GL_MODELVIEW);
@@ -136,10 +136,13 @@ void display()
 	glScalef(40,40,40);
 
 	// draw 3rd shape
-	glVertexPointer(2,GL_FLOAT,0,vertices3);
-	glColorPointer(4,GL_FLOAT,0,colors3);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][vertex]);
+	glVertexPointer(2,GL_FLOAT,0,0);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][color]);
+	glColorPointer(4,GL_FLOAT,0,0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g3][index]);
 	for(int i = 0 ; i < elementsOf(indices3) ; ++i)
-		glDrawElements(GL_TRIANGLE_STRIP,elementsOf(indices3[i]),GL_UNSIGNED_INT,indices3[i]);
+		glDrawElements(GL_TRIANGLE_STRIP,elementsOf(indices3[i]),GL_UNSIGNED_INT,offset(i*sizeof(indices3[0])));
 
 	glutSwapBuffers();
 } // end function display
@@ -193,9 +196,18 @@ int main(int argc, char **argv)
 	glBufferData(GL_ARRAY_BUFFER,sizeof(colors1),colors1,GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g1][index]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices1),indices1,GL_STATIC_DRAW);
-
-
-
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][vertex]);	// send information to the server (g2)
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices2),vertices2,GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g2][color]);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(colors2),colors2,GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g2][index]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices2),indices2,GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][vertex]);	// send information to the server (g3)
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices3),vertices3,GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[g3][color]);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(colors3),colors3,GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[g3][index]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices3),indices3,GL_STATIC_DRAW);
 
 	// event handling initialization
 	glutDisplayFunc(display);
