@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 {
 	// glut initialization
 	glutInit(&argc,argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 	glutInitWindowSize(500,500);
 	glutInitWindowPosition(700,160);
 	glutCreateWindow("Creating Geometry");
@@ -174,7 +174,13 @@ int main(int argc, char **argv)
 	glShadeModel(GL_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	glEnable(GL_LINE_SMOOTH);
+	//glEnable(GL_POINT_SMOOTH);
+	//glEnable(GL_LINE_SMOOTH);
+	//glEnable(GL_POLYGON_SMOOTH);
+	//glHint(GL_POINT_SMOOTH_HINT,GL_NICEST);
+	//glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
+	//glHint(GL_POLYGON_SMOOTH_HINT,GL_NICEST);
+	//glEnable(GL_MULTISAMPLE);
 
 	glGenVertexArrays(geometries,vertexArrays);	// create vertex array identifiers
 	glGenBuffers(geometries*arrays,&buffers[0][0]);	// create buffer identifiers
