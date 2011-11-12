@@ -1,0 +1,8 @@
+syntax: regexp
+Debug/*
+ipch/*
+Release/*
+syntax: glob
+vertex arrays.opensdf
+vertex arrays.sdf
+vertex arrays.suo
