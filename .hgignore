@@ -3,6 +3,6 @@ Debug/*
 ipch/*
 Release/*
 syntax: glob
-vertex arrays.opensdf
-vertex arrays.sdf
-vertex arrays.suo
+Rendering Geometry.opensdf
+Rendering Geometry.sdf
+Rendering Geometry.suo
