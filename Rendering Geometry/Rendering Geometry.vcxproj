@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2BBF9ED8-0715-4D27-A2A8-A1F699DB51B3}</ProjectGuid>
-    <RootNamespace>vertexarrays</RootNamespace>
+    <RootNamespace>RenderingGeometry</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

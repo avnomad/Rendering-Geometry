@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowSize(500,500);
 	glutInitWindowPosition(700,160);
-	glutCreateWindow("Creating Geometry");
+	glutCreateWindow("Rendering Geometry");
 
 	// glew initialization
 	glewInit();
